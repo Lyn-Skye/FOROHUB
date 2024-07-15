@@ -1,33 +1,40 @@
 package com.alura.reto.ForoHub.controllers;
+import com.alura.reto.ForoHub.topico.DatosRegistroTopico;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 
-import com.alura.reto.ForoHub.foro.DatosActualizarTopico;
-import com.alura.reto.ForoHub.foro.DatosPublicosTopico;
-import com.alura.reto.ForoHub.foro.Topico;
+import com.alura.reto.ForoHub.topico.DatosActualizarTopico;
+import com.alura.reto.ForoHub.topico.DatosPublicosTopico;
+import com.alura.reto.ForoHub.topico.Topico;
 import com.alura.reto.ForoHub.repositorios.TopicoRepository;
 import com.alura.reto.ForoHub.repositorios.UsuarioRepository;
 import com.alura.reto.ForoHub.usuario.DatosPublicosUsuario;
-import com.alura.reto.ForoHub.usuario.Usuario;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name = "bearer-key")
 @RequestMapping("/topicos")
 public class TopicosController {
+
     @Autowired
     private TopicoRepository topicoRepository;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+
 
     @PostMapping
-    public void registrarTopico(@RequestBody @Valid DatosPublicosTopico datosPublicosTopico, @RequestBody @Valid DatosPublicosUsuario datosPublicosUsuario) {
-        System.out.println("Topico posteado correctamente");
-        System.out.println(datosPublicosTopico);
-        //topicoRepository.save(new Topico(datosPublicosTopico, datosPublicosUsuario));
+    @Transactional
+    public ResponseEntity registrarTopico(@RequestBody @Valid DatosRegistroTopico datosRegistroTopico,
+                                          UriComponentsBuilder uriComponentsBuilder) {
+        var topico = new Topico(datosRegistroTopico);
+        topicoRepository.save(topico);
+        var uri = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
+        return ResponseEntity.created(uri).body(new DatosPublicosTopico(topico));
     }
 
     @GetMapping
