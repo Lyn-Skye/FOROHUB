@@ -1,6 +1,5 @@
 package com.alura.reto.ForoHub.controllers;
 
-import com.alura.reto.ForoHub.foro.DatosPublicosTopico;
 import com.alura.reto.ForoHub.repositorios.UsuarioRepository;
 import com.alura.reto.ForoHub.usuario.DatosActualizarUsuario;
 import com.alura.reto.ForoHub.usuario.DatosPublicosUsuario;
@@ -8,7 +7,6 @@ import com.alura.reto.ForoHub.usuario.DatosRegistroUsuario;
 import com.alura.reto.ForoHub.usuario.Usuario;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
