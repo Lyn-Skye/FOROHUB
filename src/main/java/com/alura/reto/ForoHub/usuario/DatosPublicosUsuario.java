@@ -1,6 +1,5 @@
 package com.alura.reto.ForoHub.usuario;
 
-import com.alura.reto.ForoHub.foro.Topico;
 import jakarta.validation.constraints.NotBlank;
 
 public record DatosPublicosUsuario(
